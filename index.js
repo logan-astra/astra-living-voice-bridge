@@ -170,6 +170,19 @@ app.register(async (fastify) => {
           },
         },
       }));
+
+      // Trigger Grok to say the opening greeting immediately
+      setTimeout(() => {
+        grokWS.send(JSON.stringify({
+          type: "conversation.item.create",
+          item: {
+            type: "message",
+            role: "user",
+            content: [{ type: "input_text", text: "Hello" }],
+          },
+        }));
+        grokWS.send(JSON.stringify({ type: "response.create" }));
+      }, 500);
     });
 
     // Grok → Twilio (send audio back to caller)
